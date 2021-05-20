@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const Cell = ({ board, changeBoard, i, j, player, notPlayer }) => {
+export const Cell = ({ board, changeBoard, i, j, player, notPlayer, turn }) => {
 	const [possibleState, setPossibleState] = useState("");
 
 	const myStyle = {
@@ -8,12 +8,12 @@ export const Cell = ({ board, changeBoard, i, j, player, notPlayer }) => {
 			gridRow: Number(i) + 1 + "/" + (Number(i) + 2),
 			gridColumn: Number(j) + 1 + "/" + (Number(j) + 2),
 			color: board[i][j] !== notPlayer ? "gold" : "white",
-			cursor: board[i][j] == null ? "pointer" : "context-menu",
+			cursor: board[i][j] == null && turn == player ? "pointer" : "context-menu",
 		},
 	};
 
 	const changeCell = () => {
-		if (board[i][j] == null) changeBoard(i, j, player);
+		if (board[i][j] == null && turn == player) changeBoard(i, j);
 	};
 
 	return (
@@ -21,7 +21,7 @@ export const Cell = ({ board, changeBoard, i, j, player, notPlayer }) => {
 			className="cell"
 			style={myStyle.cell}
 			onMouseEnter={() => {
-				setPossibleState(player);
+				if (turn == player) setPossibleState(player);
 			}}
 			onMouseLeave={() => {
 				setPossibleState("");
